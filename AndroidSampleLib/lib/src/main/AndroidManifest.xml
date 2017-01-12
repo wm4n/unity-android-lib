@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wm4n.android_sample_lib">
+    package="com.wm4n.android_lib">
 
     <application
-        android:label="Android Sample Lib">
+        android:label="Android Lib">
 
     </application>
 

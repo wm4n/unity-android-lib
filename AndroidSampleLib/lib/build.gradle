@@ -22,6 +22,9 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
+// This nice and useful script is from
+// http://eppz.eu/blog/unity-android-plugin-tutorial-2/
+// check out the blog for setting up library and unity
 android.libraryVariants.all { variant ->
 
     // Task names.
@@ -37,7 +40,7 @@ android.libraryVariants.all { variant ->
     // Target.
     String targetAssetFolder = "Assets/Plugins/Android";
     String targetAARFolder = "${rootDir.getPath()}/../Unity Sample App/${targetAssetFolder}"; // Navigate into 'Assets'
-    String targetAARName = "android_sample_lib.aar"; // The form you ship your plugin
+    String targetAARName = "android_lib.aar"; // The form you ship your plugin
 
     // Create task.
     task(deployTaskName, dependsOn: dependencyTaskName, type: Copy) {
