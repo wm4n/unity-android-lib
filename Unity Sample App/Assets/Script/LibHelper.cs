@@ -59,6 +59,9 @@ public class LibHelper : MonoBehaviour
         // Use Java native array list
         TryJavaArrayList();
 
+        // Try pass a enum array as method parameter
+        TryEnumArrayParam();
+
         mText.text = strBuilder.ToString();
     }
 
@@ -287,5 +290,31 @@ public class LibHelper : MonoBehaviour
         args[0] = 0;
         double[] ret = obj.Call<double[]>("get", args);
         strBuilder.Append(string.Format("TryJavaArrayList: {0} {1:0.0} {2:0.0} {3:0.0}\n", length, ret[0], ret[1], ret[2]));
+    }
+
+    void TryEnumArrayParam() {
+        AndroidJavaClass numberEnum = new AndroidJavaClass ("com.wm4n.android_lib.Util$Number");
+        AndroidJavaObject one = numberEnum.GetStatic<AndroidJavaObject> ("One");
+		AndroidJavaObject two = numberEnum.GetStatic<AndroidJavaObject> ("Two");
+        AndroidJavaObject three = numberEnum.GetStatic<AndroidJavaObject> ("Three");
+        AndroidJavaObject four = numberEnum.GetStatic<AndroidJavaObject> ("Four");
+        AndroidJavaObject five = numberEnum.GetStatic<AndroidJavaObject> ("Five");
+
+        AndroidJavaObject[] list = new AndroidJavaObject[] {one, two, three, four, five};
+
+        AndroidJavaObject obj = new AndroidJavaObject("com.wm4n.android_lib.Util");
+        IntPtr methodId = AndroidJNIHelper.GetMethodID(obj.GetRawClass(), "concatNumber", "([Lcom/wm4n/android_lib/Util$Number;)Ljava/lang/String;");
+
+        IntPtr array = AndroidJNI.NewObjectArray(5, numberEnum.GetRawClass(), one.GetRawObject());
+        AndroidJNI.SetObjectArrayElement(array, 1, two.GetRawObject());
+        AndroidJNI.SetObjectArrayElement(array, 2, three.GetRawObject());
+        AndroidJNI.SetObjectArrayElement(array, 3, four.GetRawObject());
+        AndroidJNI.SetObjectArrayElement(array, 4, five.GetRawObject());
+
+        jvalue[] methodArgs = new jvalue[1];
+        methodArgs[0].l = array;
+        string result = AndroidJNI.CallStringMethod(obj.GetRawObject(), methodId, methodArgs);
+
+        strBuilder.Append(string.Format("TryEnumArrayParam: {0}\n", result));
     }
 }

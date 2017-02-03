@@ -172,4 +172,13 @@ public class Util {
         }
     }
 
+    public String concatNumber(Number[] numArray) {
+        StringBuilder sb = new StringBuilder(100);
+        for(Number num : numArray) {
+            sb.append(num.name());
+            sb.append(' ');
+        }
+        return sb.toString();
+    }
+
 }
